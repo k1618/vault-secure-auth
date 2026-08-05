@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="eyebrow">auth · hashing · breach-check</div>
+  <h1>Autenticación que revisa sus propios recibos.</h1>
+  <p class="lead">
+    Vault es una plataforma de registro e inicio de sesión que valida la
+    fuerza de cada contraseña en tiempo real y verifica, sin exponerla
+    nunca por completo, si ya apareció en una filtración de datos conocida.
+  </p>
+  <div class="hero-actions">
+    <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Crear una cuenta</a>
+    <a href="{{ url_for('auth.login') }}" class="btn btn-secondary">Iniciar sesión</a>
+  </div>
+</section>
+
+<section class="dash-grid" style="margin-bottom:64px;">
+  <div class="dash-card">
+    <div class="label">Hashing</div>
+    <div class="value">bcrypt + salt</div>
+  </div>
+  <div class="dash-card">
+    <div class="label">Chequeo de filtraciones</div>
+    <div class="value">k-Anonymity (HIBP)</div>
+  </div>
+  <div class="dash-card">
+    <div class="label">Protección de fuerza bruta</div>
+    <div class="value">Bloqueo tras 5 intentos</div>
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<section class="hero" style="padding-top:48px;">
+  <div class="eyebrow">sesión activa</div>
+  <h1>Hola, {{ current_user.username }}.</h1>
+  <p class="lead">Esta página solo es visible con una sesión válida (@login_required).</p>
+</section>
+
+<div class="dash-grid">
+  <div class="dash-card">
+    <div class="label">Correo registrado</div>
+    <div class="value">{{ current_user.email }}</div>
+  </div>
+  <div class="dash-card">
+    <div class="label">Cuenta creada</div>
+    <div class="value">{{ current_user.created_at.strftime('%d/%m/%Y') }}</div>
+  </div>
+  <div class="dash-card">
+    <div class="label">Último acceso</div>
+    <div class="value">{{ current_user.last_login_at.strftime('%d/%m/%Y %H:%M') if current_user.last_login_at else '—' }}</div>
+  </div>
+</div>
+{% endblock %}

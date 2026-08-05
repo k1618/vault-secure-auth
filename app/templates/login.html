@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<div class="form-page card">
+  <h2>Iniciar sesión</h2>
+  <form method="POST" action="{{ url_for('auth.login') }}" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+    <div class="field">
+      <label for="identifier">Usuario o correo</label>
+      <input type="text" id="identifier" name="identifier" required autocomplete="username">
+    </div>
+
+    <div class="field">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" required autocomplete="current-password">
+    </div>
+
+    <button type="submit" class="btn btn-primary btn-block">Entrar</button>
+  </form>
+  <div class="form-footer">
+    ¿No tienes cuenta? <a href="{{ url_for('auth.register') }}">Regístrate</a>
+  </div>
+</div>
+{% endblock %}

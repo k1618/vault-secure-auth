@@ -1,0 +1,252 @@
+/*
+  Sistema de diseño — "Vault"
+  ---------------------------------
+  Paleta:
+    --bg:        #12161D  fondo principal (carbón azulado, no negro puro)
+    --surface:   #1B212B  tarjetas / paneles
+    --border:    #2A3240  líneas y divisores
+    --accent:    #E8A93B  ámbar — foco de atención, evoca "alerta de seguridad"
+    --safe:      #4FA98C  verde apagado — estados correctos / seguros
+    --danger:    #D9534F  rojo apagado — errores
+    --text:      #ECEFF4  texto principal
+    --text-muted:#8B93A3  texto secundario
+
+  Tipografía:
+    Display / labels técnicos -> 'IBM Plex Mono' (evoca logs y auditorías)
+    Cuerpo de texto           -> 'Inter' (legibilidad)
+*/
+
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+:root {
+  --bg: #12161D;
+  --surface: #1B212B;
+  --surface-raised: #212836;
+  --border: #2A3240;
+  --accent: #E8A93B;
+  --accent-dim: #8a6a2c;
+  --safe: #4FA98C;
+  --danger: #D9534F;
+  --text: #ECEFF4;
+  --text-muted: #8B93A3;
+  --radius: 10px;
+  --mono: 'IBM Plex Mono', ui-monospace, monospace;
+  --sans: 'Inter', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  line-height: 1.5;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+.container {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* ---------- Nav ---------- */
+.navbar {
+  border-bottom: 1px solid var(--border);
+  padding: 18px 0;
+}
+.navbar .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.brand {
+  font-family: var(--mono);
+  font-weight: 700;
+  font-size: 1.05rem;
+  letter-spacing: 0.02em;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand::before {
+  content: "";
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  background: var(--accent);
+  display: inline-block;
+}
+.nav-links { display: flex; gap: 20px; align-items: center; font-size: 0.92rem; }
+.nav-links a { color: var(--text-muted); }
+.nav-links a:hover { color: var(--text); }
+
+/* ---------- Hero ---------- */
+.hero {
+  padding: 72px 0 48px;
+}
+.hero .eyebrow {
+  font-family: var(--mono);
+  color: var(--accent);
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-size: 2.4rem;
+  line-height: 1.15;
+  margin: 0 0 18px;
+  max-width: 640px;
+}
+.hero p.lead {
+  color: var(--text-muted);
+  max-width: 520px;
+  margin-bottom: 32px;
+}
+.hero-actions { display: flex; gap: 14px; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block;
+  padding: 11px 22px;
+  border-radius: 6px;
+  font-family: var(--sans);
+  font-weight: 600;
+  font-size: 0.92rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  text-decoration: none !important;
+}
+.btn-primary { background: var(--accent); color: #1a1305; }
+.btn-primary:hover { background: #f0b54f; }
+.btn-secondary { background: transparent; border-color: var(--border); color: var(--text); }
+.btn-secondary:hover { border-color: var(--accent); color: var(--accent); }
+.btn-block { width: 100%; text-align: center; }
+
+/* ---------- Cards / forms ---------- */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+}
+.form-page {
+  max-width: 420px;
+  margin: 64px auto;
+}
+.form-page h2 {
+  font-family: var(--mono);
+  margin-top: 0;
+}
+.field { margin-bottom: 18px; }
+.field label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  margin-bottom: 6px;
+}
+.field input {
+  width: 100%;
+  padding: 10px 12px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-size: 0.95rem;
+  font-family: var(--sans);
+}
+.field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.form-footer {
+  margin-top: 18px;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* ---------- Flash messages ---------- */
+.flash { padding: 12px 14px; border-radius: 6px; margin-bottom: 16px; font-size: 0.9rem; }
+.flash-error { background: rgba(217,83,79,0.12); border: 1px solid var(--danger); color: #f5b6b4; }
+.flash-success { background: rgba(79,169,140,0.12); border: 1px solid var(--safe); color: #a9e0cd; }
+.flash-info { background: rgba(139,147,163,0.12); border: 1px solid var(--border); color: var(--text-muted); }
+
+/* ---------- Signature element: strength gauge ---------- */
+.strength-gauge { margin-top: 10px; }
+.gauge-segments {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+.gauge-segments .seg {
+  height: 6px;
+  flex: 1;
+  border-radius: 3px;
+  background: var(--border);
+  transition: background 0.25s ease;
+}
+.gauge-segments .seg.filled-weak { background: var(--danger); }
+.gauge-segments .seg.filled-mid { background: var(--accent); }
+.gauge-segments .seg.filled-strong { background: var(--safe); }
+
+.checklist { list-style: none; padding: 0; margin: 10px 0 0; font-size: 0.82rem; font-family: var(--mono); }
+.checklist li { color: var(--text-muted); margin-bottom: 3px; }
+.checklist li.ok { color: var(--safe); }
+.checklist li .mark { display: inline-block; width: 16px; }
+
+.breach-badge {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  border: 1px solid var(--border);
+}
+.breach-badge.safe { border-color: var(--safe); color: var(--safe); }
+.breach-badge.danger { border-color: var(--danger); color: #f5b6b4; }
+.breach-badge.unknown { color: var(--text-muted); }
+
+/* ---------- Dashboard ---------- */
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-top: 28px;
+}
+.dash-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+.dash-card .label {
+  font-family: var(--mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.dash-card .value {
+  font-size: 1.3rem;
+  margin-top: 6px;
+}
+
+footer.site-footer {
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+  padding: 24px 0;
+  margin-top: 64px;
+  text-align: center;
+}
+
+@media (max-width: 560px) {
+  .hero h1 { font-size: 1.8rem; }
+  .hero-actions { flex-direction: column; }
+}
