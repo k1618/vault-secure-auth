@@ -158,7 +158,7 @@ def test_backup_code_works_once_then_is_rejected(client, app):
     with client.session_transaction() as sess:
         secret = sess["setup_totp_secret"]
     totp = pyotp.TOTP(secret)
-    setup_response = client.post("/2fa/setup", data={"code": totp.now()})
+    client.post("/2fa/setup", data={"code": totp.now()})
 
     # Extrae un código de respaldo real de la respuesta renderizada.
     with app.app_context():
