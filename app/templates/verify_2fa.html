@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block title %}Verificación en dos pasos{% endblock %}
+{% block content %}
+<div class="form-page card">
+  <h2>Verificación en dos pasos</h2>
+  <p class="form-footer" style="text-align:left; margin-bottom:20px;">
+    Escribe el código de 6 dígitos de tu app autenticadora, o uno de tus
+    códigos de respaldo si no tienes acceso a ella.
+  </p>
+
+  <form method="POST" action="{{ url_for('auth.verify_totp') }}" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field">
+      <label for="code">Código</label>
+      <input type="text" id="code" name="code" autocomplete="one-time-code" required autofocus>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Verificar</button>
+  </form>
+
+  {% if attempts_left is defined %}
+    <div class="form-footer">Intentos restantes antes de cerrar esta sesión de login: {{ attempts_left }}</div>
+  {% endif %}
+  <div class="form-footer">
+    <a href="{{ url_for('auth.login') }}">Cancelar e iniciar sesión de nuevo</a>
+  </div>
+</div>
+{% endblock %}

@@ -20,5 +20,23 @@
     <div class="label">Último acceso</div>
     <div class="value">{{ current_user.last_login_at.strftime('%d/%m/%Y %H:%M') if current_user.last_login_at else '—' }}</div>
   </div>
+  <div class="dash-card">
+    <div class="label">Verificación en dos pasos</div>
+    <div class="value">
+      {% if current_user.totp_enabled %}
+        <span style="color:var(--safe);">Activada</span> · {{ current_user.remaining_backup_codes() }} códigos de respaldo restantes
+      {% else %}
+        <span style="color:var(--text-muted);">Desactivada</span>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div style="margin-top:24px;">
+  {% if current_user.totp_enabled %}
+    <a href="{{ url_for('auth.disable_totp') }}" class="btn" style="border:1px solid var(--danger); color:var(--danger);">Desactivar 2FA</a>
+  {% else %}
+    <a href="{{ url_for('auth.setup_totp') }}" class="btn btn-primary">Activar verificación en dos pasos</a>
+  {% endif %}
 </div>
 {% endblock %}

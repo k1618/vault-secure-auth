@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Códigos de respaldo{% endblock %}
+{% block content %}
+<div class="form-page card">
+  <h2>Verificación en dos pasos activada</h2>
+  <div class="flash flash-success">Guarda estos códigos de respaldo en un lugar seguro.</div>
+  <p class="form-footer" style="text-align:left; margin:16px 0;">
+    Cada código funciona una sola vez y sirve para entrar si pierdes
+    acceso a tu app autenticadora. No se volverán a mostrar.
+  </p>
+
+  <ul style="font-family:var(--mono); font-size:1.05rem; line-height:2; list-style:none; padding:16px; background:var(--surface-raised); border-radius:var(--radius); border:1px solid var(--border);">
+    {% for code in backup_codes %}
+      <li>{{ code }}</li>
+    {% endfor %}
+  </ul>
+
+  <a href="{{ url_for('main.dashboard') }}" class="btn btn-primary btn-block" style="margin-top:24px; display:block; text-align:center;">
+    Ya los guardé, ir al dashboard
+  </a>
+</div>
+{% endblock %}

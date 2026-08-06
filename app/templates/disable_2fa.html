@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Desactivar verificación en dos pasos{% endblock %}
+{% block content %}
+<div class="form-page card">
+  <h2>Desactivar verificación en dos pasos</h2>
+  <p class="form-footer" style="text-align:left; margin-bottom:20px;">
+    Por seguridad, confirma tu contraseña para desactivar el 2FA de tu cuenta.
+  </p>
+
+  <form method="POST" action="{{ url_for('auth.disable_totp') }}" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field">
+      <label for="password">Contraseña</label>
+      <input type="password" id="password" name="password" autocomplete="current-password" required autofocus>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block" style="background:var(--danger); border-color:var(--danger);">
+      Desactivar 2FA
+    </button>
+  </form>
+  <div class="form-footer">
+    <a href="{{ url_for('main.dashboard') }}">Cancelar</a>
+  </div>
+</div>
+{% endblock %}

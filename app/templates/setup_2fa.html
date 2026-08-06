@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% block title %}Activar verificación en dos pasos{% endblock %}
+{% block content %}
+<div class="form-page card">
+  <h2>Activar verificación en dos pasos</h2>
+  <p class="form-footer" style="text-align:left; margin-bottom:20px;">
+    Escanea este código QR con Google Authenticator, Authy o cualquier
+    app compatible con TOTP. Luego escribe el código de 6 dígitos que
+    te muestre para confirmar.
+  </p>
+
+  <div style="text-align:center; margin:24px 0;">
+    <img src="{{ qr_data_uri }}" alt="Código QR para 2FA" width="220" height="220"
+         style="background:#fff; padding:12px; border-radius:8px;">
+  </div>
+
+  <div class="field">
+    <label>¿No puedes escanear el QR? Introduce este código manualmente:</label>
+    <input type="text" readonly value="{{ secret }}"
+           style="font-family:var(--mono); letter-spacing:1px;">
+  </div>
+
+  <form method="POST" action="{{ url_for('auth.setup_totp') }}" novalidate>
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+    <div class="field">
+      <label for="code">Código de 6 dígitos</label>
+      <input type="text" id="code" name="code" inputmode="numeric" pattern="[0-9]{6}"
+             maxlength="6" autocomplete="one-time-code" required autofocus>
+    </div>
+    <button type="submit" class="btn btn-primary btn-block">Confirmar y activar</button>
+  </form>
+</div>
+{% endblock %}

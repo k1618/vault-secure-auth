@@ -40,6 +40,16 @@ tiene una razón de seguridad detrás, explicada en el código y aquí abajo.
 - **Protección CSRF** en todos los formularios (Flask-WTF).
 - **Sesiones gestionadas con Flask-Login**, rutas protegidas con
   `@login_required`.
+- **Autenticación de dos factores (TOTP)**, compatible con Google
+  Authenticator, Authy, 1Password, etc.:
+  - Código QR generado en el propio servidor (el secreto nunca se manda
+    a un servicio externo de generación de QR).
+  - Protección anti-replay: el mismo código de 6 dígitos no se puede
+    reutilizar dos veces dentro de su ventana de validez.
+  - Códigos de respaldo de un solo uso por si el usuario pierde su
+    dispositivo.
+  - Límite de intentos en la verificación del segundo factor (igual que
+    el bloqueo de login por contraseña).
 
 ## Arquitectura
 
@@ -49,14 +59,17 @@ secure-auth-platform/
 │   ├── __init__.py        # Application factory (patrón factory de Flask)
 │   ├── models.py           # Modelo User (SQLAlchemy)
 │   ├── routes.py           # Blueprints: auth, main, api
-│   ├── security.py         # Validación de fuerza + chequeo HIBP (sin dependencias de Flask)
+│   ├── security.py         # Validación de fuerza + chequeo HIBP + TOTP/2FA (sin dependencias de Flask)
 │   ├── static/
 │   │   ├── css/style.css
 │   │   └── js/password-check.js   # Medidor de fuerza en vivo + llamada AJAX a /api/check-password
-│   └── templates/          # Jinja2: base, index, register, login, dashboard
+│   └── templates/          # Jinja2: base, index, register, login, dashboard, setup/verify/disable 2FA
+├── scripts/
+│   └── migrate_add_2fa_columns.py   # Agrega las columnas de 2FA a una DB SQLite ya existente
 ├── tests/
 │   ├── test_security.py       # Tests unitarios puros (sin Flask, sin red)
-│   └── test_auth_routes.py    # Tests de integración con test client + SQLite en memoria
+│   ├── test_auth_routes.py    # Tests de integración con test client + SQLite en memoria
+│   └── test_totp_routes.py    # Tests de integración del flujo completo de 2FA
 ├── .github/workflows/ci.yml    # Corre lint + tests en cada push/PR
 ├── requirements.txt
 └── run.py
@@ -93,6 +106,14 @@ python run.py
 ```
 
 La app queda disponible en `http://127.0.0.1:5000`.
+
+> **Si ya tenías el proyecto corriendo antes de la versión con 2FA:**
+> tu `instance/app.db` local no se actualiza solo (`instance/` está en
+> `.gitignore`, así que `git pull` no lo toca). Corre esto una vez para
+> agregar las columnas nuevas sin perder tus usuarios existentes:
+> ```bash
+> python scripts/migrate_add_2fa_columns.py
+> ```
 
 ## Correr los tests
 

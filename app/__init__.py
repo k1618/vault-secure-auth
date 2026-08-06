@@ -42,7 +42,20 @@ CONFIGS = {
 def create_app(env: str = "development"):
     app = Flask(__name__)
 
-    app.config["SECRET_KEY"] = os.getenv("SECRET_KEY", "dev-key-change-me-in-.env")
+    secret_key = os.getenv("SECRET_KEY")
+    if not secret_key:
+        if env == "production":
+            # SECRET_KEY firma las cookies de sesión (incluida la sesión
+            # "pendiente" del segundo factor en 2FA) y los tokens CSRF.
+            # Un valor por defecto público en producción anula ambas
+            # protecciones — mejor que la app no arranque, a que arranque
+            # insegura sin que nadie se dé cuenta.
+            raise RuntimeError(
+                "SECRET_KEY no está configurada. Define la variable de entorno "
+                "SECRET_KEY antes de arrancar en producción (ver .env.example)."
+            )
+        secret_key = "dev-key-change-me-in-.env"  # solo aceptable en development/testing
+    app.config["SECRET_KEY"] = secret_key
     app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
     app.config.update(CONFIGS.get(env, CONFIGS["development"]))
 
